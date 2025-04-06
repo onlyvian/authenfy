@@ -1,5 +1,15 @@
 from flask import Flask, render_template, request, jsonify
 from datetime import datetime, timedelta
+import smtplib
+from email.message import EmailMessage
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+SMTP_EMAIL = os.getenv("SMTP_EMAIL")
+SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
+RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL")
 
 app = Flask(__name__)
 
@@ -25,9 +35,9 @@ def handle_contact():
         data = request.get_json(force=True)
         name = data.get("name")
         email = data.get("email")
-        message = data.get("message")
+        msg = data.get("message")
 
-        if not name or not email or not message:
+        if not name or not email or not msg:
             return jsonify({
                 "status": "error",
                 "message": "All fields are required."
@@ -44,20 +54,16 @@ def handle_contact():
                 "message": f"Please wait {remaining} seconds before sending another message."
             }), 429
 
-        print(f"Message from {name} <{email}>: {message}")
-        cooldowns[ip] = now
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+            smtp.login(SMTP_EMAIL, SMTP_PASSWORD)
+            smtp.send_message(msg)
 
-        return jsonify({
-            "status": "success",
-            "message": "✅ Message sent successfully!"
-        })
+        print(f"[✓] Email sent from {email} to {RECEIVER_EMAIL}")
+        return jsonify({"status": "success", "message": "Email sent successfully!"})
 
     except Exception as e:
-        print("Server error:", e)
-        return jsonify({
-            "status": "error",
-            "message": "❌ Something went wrong on the server."
-        }), 500
+        print("[✗] Error sending email:", str(e))
+        return jsonify({"status": "error", "message": "Failed to send email."}), 500
 
 if __name__ == "__main__":
     # Run on all available IPs (public access), port 5000
