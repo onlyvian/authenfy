@@ -28,16 +28,15 @@ def about():
 @app.route("/contact.html")
 def contact():
     return render_template("contact.html")
-
 @app.route("/contact", methods=["POST"])
 def handle_contact():
     try:
         data = request.get_json(force=True)
         name = data.get("name")
         email = data.get("email")
-        msg = data.get("message")
+        msg_content = data.get("message")
 
-        if not name or not email or not msg:
+        if not name or not email or not msg_content:
             return jsonify({
                 "status": "error",
                 "message": "All fields are required."
@@ -46,7 +45,7 @@ def handle_contact():
         ip = request.remote_addr or "127.0.0.1"
         now = datetime.utcnow()
 
-        # 60-second cooldown logic
+        # Cooldown check
         if ip in cooldowns and (now - cooldowns[ip]) < timedelta(seconds=60):
             remaining = 60 - int((now - cooldowns[ip]).total_seconds())
             return jsonify({
@@ -54,9 +53,23 @@ def handle_contact():
                 "message": f"Please wait {remaining} seconds before sending another message."
             }), 429
 
+        # Create proper email message
+        msg = EmailMessage()
+        msg['Subject'] = f"New message from {name} ({email})"
+        msg['From'] = SMTP_EMAIL
+        msg['To'] = RECEIVER_EMAIL
+        msg.set_content(f"""
+        Name: {name}
+        Email: {email}
+        Message: {msg_content}
+        """)
+
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
             smtp.login(SMTP_EMAIL, SMTP_PASSWORD)
             smtp.send_message(msg)
+
+        # Update cooldown after successful send
+        cooldowns[ip] = now
 
         print(f"[✓] Email sent from {email} to {RECEIVER_EMAIL}")
         return jsonify({"status": "success", "message": "Email sent successfully!"})
@@ -64,7 +77,7 @@ def handle_contact():
     except Exception as e:
         print("[✗] Error sending email:", str(e))
         return jsonify({"status": "error", "message": "Failed to send email."}), 500
-
+    
 if __name__ == "__main__":
     # Run on all available IPs (public access), port 5000
     app.run(host="0.0.0.0", port=5000, debug=True)
