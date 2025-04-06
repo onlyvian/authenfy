@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, jsonify
-from datetime import datetime, timedelta
 import smtplib
 from email.message import EmailMessage
 from dotenv import load_dotenv
 import os
+from flask import Flask, render_template, request, jsonify
+from datetime import datetime, timedelta
 
 # Load environment variables from .env file
 load_dotenv()
@@ -15,31 +15,19 @@ RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL")
 
 app = Flask(__name__)
 
-# Store cooldowns per IP address to limit submissions
+# Store cooldowns per IP address
 cooldowns = {}
-
-@app.route("/")
-@app.route("/index.html")
-def index():
-    return render_template("index.html")
-
-@app.route("/about.html")
-def about():
-    return render_template("about.html")
-
-@app.route("/contact.html")
-def contact():
-    return render_template("contact.html")
 
 @app.route("/contact", methods=["POST"])
 def handle_contact():
     try:
+        # Retrieve data from the contact form submission
         data = request.get_json(force=True)
         name = data.get("name")
         email = data.get("email")
         msg = data.get("message")
 
-        # Check if all fields are filled
+        # Check for empty fields
         if not name or not email or not msg:
             return jsonify({
                 "status": "error",
@@ -49,7 +37,7 @@ def handle_contact():
         ip = request.remote_addr or "127.0.0.1"
         now = datetime.utcnow()
 
-        # 60-second cooldown logic to prevent spam
+        # Implement 60-second cooldown
         if ip in cooldowns and (now - cooldowns[ip]) < timedelta(seconds=60):
             remaining = 60 - int((now - cooldowns[ip]).total_seconds())
             return jsonify({
@@ -64,29 +52,32 @@ def handle_contact():
         msg_obj["From"] = SMTP_EMAIL
         msg_obj["To"] = RECEIVER_EMAIL
 
-        # Send the email via Gmail's SMTP server
+        # Attempt to send the email
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
-            smtp.login(SMTP_EMAIL, SMTP_PASSWORD)
-            smtp.send_message(msg_obj)
+            print("[✓] Trying to login...")
+            smtp.login(SMTP_EMAIL, SMTP_PASSWORD)  # Login using SMTP credentials
+            print("[✓] Login successful.")
+            smtp.send_message(msg_obj)  # Send the email message
+            print(f"[✓] Email sent from {email} to {RECEIVER_EMAIL}")
 
-        # Print success and update the cooldown timestamp for the IP
-        print(f"[✓] Email sent from {email} to {RECEIVER_EMAIL}")
-        cooldowns[ip] = now  # Update cooldown to the current time
-
-        # Return success response
+        cooldowns[ip] = now  # Update cooldown for the IP address
         return jsonify({
             "status": "success",
             "message": "✅ Email sent successfully!"
         })
 
+    except smtplib.SMTPAuthenticationError as e:
+        # Handle authentication errors (invalid username/password)
+        print("[✗] SMTP Authentication Error:", e)
+        return jsonify({"status": "error", "message": "Invalid SMTP credentials."}), 500
+    except smtplib.SMTPException as e:
+        # Catch all other SMTP errors (network issues, etc.)
+        print("[✗] SMTP Error:", e)
+        return jsonify({"status": "error", "message": "Failed to send email. Please try again later."}), 500
     except Exception as e:
-        # Print any errors to the console for debugging
-        print("[✗] Error sending email:", str(e))
-        return jsonify({
-            "status": "error",
-            "message": "❌ Failed to send email."
-        }), 500
+        # General error handler for anything else
+        print("[✗] Error:", e)
+        return jsonify({"status": "error", "message": "❌ Something went wrong."}), 500
 
 if __name__ == "__main__":
-    # Run the Flask app on all available IPs and port 5000
     app.run(host="0.0.0.0", port=5000, debug=True)
