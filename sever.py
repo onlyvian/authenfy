@@ -60,4 +60,5 @@ def handle_contact():
         }), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Run on all available IPs (public access), port 5000
+    app.run(host="0.0.0.0", port=5000, debug=True)
