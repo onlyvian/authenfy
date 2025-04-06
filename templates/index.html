@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Deepfake Detector - Authenfy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #preview video, #preview img {
+      max-height: 240px;
+      border-radius: 1rem;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <nav class="bg-white shadow-md px-6 py-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center space-x-2">
+        <img src="/static/logo.png" alt="Authenfy Logo" class="h-10 w-auto"/>
+        <span class="text-xl font-bold text-blue-700">Authenfy</span>
+      </a>
+
+      <!-- Links -->
+      <div class="space-x-6 text-sm font-medium text-gray-700">
+        <a href="index.html" class="hover:text-blue-600 transition">Home</a>
+        <a href="about.html" class="hover:text-blue-600 transition">About</a>
+        <a href="contact.html" class="hover:text-blue-600 transition">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow flex justify-center items-center px-4">
+    <div class="w-full max-w-3xl bg-white shadow-2xl rounded-2xl p-6 sm:p-8 space-y-6 my-10">
+
+      <!-- Logo & Tagline -->
+      <div class="text-center space-y-2">
+        <img src="/static/logo.png" alt="Authenfy Logo" class="mx-auto h-16 sm:h-20 w-auto" />
+        <p class="text-sm sm:text-base text-gray-500 font-medium">Truth in Every Frame</p>
+      </div>
+
+      <!-- Upload Section -->
+      <div class="space-y-4">
+        <label class="block text-gray-700 font-medium">Upload Image or Video</label>
+        <input id="mediaFile" type="file" accept="image/*,video/*"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300"/>
+
+        <!-- Preview -->
+        <div id="preview" class="mt-4 text-center"></div>
+      </div>
+
+      <!-- Detect Button -->
+      <button onclick="submitDetection()"
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl text-lg transition-all duration-300">
+        🔍 Detect Deepfake
+      </button>
+
+      <!-- Loading Spinner -->
+      <div id="loading" class="hidden flex justify-center mt-4">
+        <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-600"></div>
+      </div>
+
+      <!-- Result Card -->
+      <div id="resultCard" class="hidden mt-6 p-6 border rounded-xl shadow-md transition-all duration-500">
+        <h2 class="text-xl font-semibold">🧠 Result:</h2>
+        <p id="status" class="text-2xl font-bold mt-2"></p>
+        <p id="confidence" class="text-gray-500 mt-1"></p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- JavaScript -->
+  <script>
+    const previewContainer = document.getElementById('preview');
+    const fileInput = document.getElementById('mediaFile');
+    const loading = document.getElementById('loading');
+    const resultCard = document.getElementById('resultCard');
+    const statusText = document.getElementById('status');
+    const confidenceText = document.getElementById('confidence');
+
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      previewContainer.innerHTML = "";
+
+      if (!file) return;
+
+      const url = URL.createObjectURL(file);
+      const mediaType = file.type.startsWith('video') ? 'video' : 'img';
+
+      const element = document.createElement(mediaType);
+      element.src = url;
+      element.controls = true;
+      element.classList.add("mx-auto", "mt-2");
+
+      previewContainer.appendChild(element);
+    });
+
+    async function submitDetection() {
+      const file = fileInput.files[0];
+      if (!file) return alert("Please upload a media file first.");
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      resultCard.classList.add("hidden");
+      loading.classList.remove("hidden");
+
+      try {
+        const response = await fetch("/detect", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+        loading.classList.add("hidden");
+
+        const isReal = result.status === "real";
+        statusText.innerText = isReal ? "✅ Authentic Media" : "❌ Deepfake Detected";
+        statusText.className = `mt-2 text-2xl font-bold ${isReal ? "text-green-600" : "text-red-600"}`;
+        confidenceText.innerText = `Confidence: ${(result.confidence * 100).toFixed(2)}%`;
+
+        resultCard.classList.remove("hidden");
+        resultCard.classList.add("border-blue-300", "bg-blue-50");
+      } catch (err) {
+        loading.classList.add("hidden");
+        alert("Error detecting deepfake. Please try again.");
+      }
+    }
+  </script>
+
+</body>
+</html>
