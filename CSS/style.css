@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #fff;
+    color: #222;
+    line-height: 1.6;
+  }
+  
+  header.main-header {
+    background-color: #b00020;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo img {
+    height: 50px;
+    margin-right: 10px;
+  }
+  
+  nav a {
+    color: white;
+    margin-left: 15px;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  nav a:hover {
+    text-decoration: underline;
+  }
+  
+  .hero {
+    background: url('../img/bg.png') center/cover no-repeat;
+    text-align: center;
+    color: white;
+    padding: 100px 20px;
+    background-color: #b00020;
+  }
+  
+  .hero h2 {
+    font-size: 2.5rem;
+  }
+  
+  .btn {
+    background-color: white;
+    color: #b00020;
+    padding: 12px 25px;
+    font-size: 1rem;
+    border: none;
+    margin-top: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+  }
+  
+  .btn:hover {
+    background-color: #eee;
+  }
+  
+  .info-section, .upload-section {
+    padding: 50px 20px;
+    text-align: center;
+  }
+  
+  .alt {
+    background-color: #f4f4f4;
+  }
+  
+  input[type="file"] {
+    margin: 20px auto;
+    display: block;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #b00020;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #a0001a;
+  }
+  
+  #result {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
+  footer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+  }
+  
