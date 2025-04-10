@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Deepseek Fake Detection - Detect Deepfakes and Verify Content Authenticity">
+    <title>Deepseek Fake Detection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            transition: margin-left 0.3s ease-in-out;
+        }
+
+        header {
+            background-color: #222;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            flex: 1;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+        }
+
+        /* Logo Styling */
+        header img {
+            max-width: 120px; /* Adjust logo size */
+            margin-bottom: 20px;
+        }
+
+        nav {
+            background-color: #333;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1.1em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            position: fixed;
+            left: -250px; /* Initially hidden */
+            top: 0;
+            bottom: 0;
+            background-color: #222;
+            color: white;
+            padding-top: 20px;
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-right: 2px solid #444;
+            transition: left 0.3s ease-in-out; /* Slide effect */
+        }
+
+        .sidebar a {
+            color: white;
+            font-size: 1.2em;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #0056b3;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: block;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+
+        .hamburger div {
+            width: 35px;
+            height: 5px;
+            margin: 6px 0;
+            background-color: #333;
+            transition: 0.4s;
+        }
+
+        /* Hide the checkbox (used for toggling) */
+        #menu-toggle {
+            display: none;
+        }
+
+        /* Show the sidebar when checkbox is checked */
+        #menu-toggle:checked ~ .sidebar {
+            left: 0;
+        }
+
+        /* Change hamburger icon to close button */
+        #menu-toggle:checked ~ .sidebar ~ .hamburger div:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        #menu-toggle:checked ~ .sidebar ~ .hamburger div:nth-child(2) {
+            opacity: 0;
+        }
+
+        #menu-toggle:checked ~ .sidebar ~ .hamburger div:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        /* Main content area */
+        .main-content {
+            margin-left: 270px; /* to make space for the sidebar */
+            padding: 20px;
+            flex: 1;
+        }
+
+        section {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        section h2 {
+            color: #222;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        footer {
+            background-color: #222;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .button {
+            background-color: #007BFF;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            font-size: 1.2em;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 15px;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            nav a {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Checkbox to toggle menu -->
+<input type="checkbox" id="menu-toggle" />
+
+<!-- Hamburger Menu -->
+<label for="menu-toggle" class="hamburger">
+    <div></div>
+    <div></div>
+    <div></div>
+</label>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <br>
+    <a href="#about">About</a>
+    <a href="#features">Features</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#contact">Contact</a>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <header>
+        <!-- Logo Image -->
+        <img src="https://cdn.iconscout.com/icon/premium/png-512-thumb/change-human-face-2555329-2173182.png?f=webp&w=512" alt="Deepseek Logo"> <!-- Provided logo -->
+        <h1>Welcome to AUTHENFY</h1>
+        <p>Accurately Detect Deepfakes and Verify Content Authenticity</p>
+    </header>
+
+    <section id="about">
+        <div class="content">
+            <h2>About AUTHENFY</h2>
+            <p>Deepseek is an advanced AI-driven platform designed to detect and authenticate videos, images, and audio recordings. Our technology analyzes every aspect of media to identify deepfakes and other manipulated content, ensuring that the information you trust is real.</p>
+        </div>
+    </section>
+
+    <section id="features" style="background-color: #e8f4f8;">
+        <div class="content">
+            <h2>Key Features</h2>
+            <ul class="features-list">
+                <li>Advanced AI for video, image, and audio analysis</li>
+                <li>High accuracy in identifying deepfakes and tampered content</li>
+                <li>Fast detection and real-time results</li>
+                <li>Secure blockchain-backed authenticity verification</li>
+                <li>Easy-to-use interface for seamless experience</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="how-it-works">
+        <div class="content">
+            <h2>How It Works</h2>
+            <p>Deepseek's detection process involves a series of sophisticated AI algorithms to analyze both the visual and audio components of the content. We break down the media into frames and chunks, use embeddings for face recognition and voice analysis, and run deep learning models like Xception to detect inconsistencies.</p>
+            <br>
+            <a href="#contact" class="button">Start Detecting Now</a>
+        </div>
+    </section>
+
+    <section id="contact" style="background-color: #f4f4f4;">
+        <div class="content">
+            <h2>Contact Us</h2>
+            <p>Have any query? Reach out to our support team!</p>
+            <p>Email: soon</p>
+            <p>Phone: Soon</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Deepseek Fake Detection. Thank You!</p>
+    </footer>
+</div>
+
+</body>
+</html>
