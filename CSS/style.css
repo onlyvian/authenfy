@@ -1,112 +1,190 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #fff;
-    color: #222;
-    line-height: 1.6;
-  }
-  
-  header.main-header {
-    background-color: #b00020;
-    color: white;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo img {
-    height: 50px;
-    margin-right: 10px;
-  }
-  
-  nav a {
-    color: white;
-    margin-left: 15px;
-    text-decoration: none;
-    font-weight: 500;
-  }
-  
-  nav a:hover {
-    text-decoration: underline;
-  }
-  
-  .hero {
-    background: url('../img/bg.png') center/cover no-repeat;
-    text-align: center;
-    color: white;
-    padding: 100px 20px;
-    background-color: #b00020;
-  }
-  
-  .hero h2 {
-    font-size: 2.5rem;
-  }
-  
-  .btn {
-    background-color: white;
-    color: #b00020;
-    padding: 12px 25px;
-    font-size: 1rem;
-    border: none;
-    margin-top: 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-    text-decoration: none;
-  }
-  
-  .btn:hover {
-    background-color: #eee;
-  }
-  
-  .info-section, .upload-section {
-    padding: 50px 20px;
-    text-align: center;
-  }
-  
-  .alt {
-    background-color: #f4f4f4;
-  }
-  
-  input[type="file"] {
-    margin: 20px auto;
-    display: block;
-  }
-  
-  button {
-    padding: 10px 20px;
-    background-color: #b00020;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #a0001a;
-  }
-  
-  #result {
-    margin-top: 20px;
-    font-weight: bold;
-  }
-  
-  footer {
-    background-color: #222;
-    color: white;
-    text-align: center;
-    padding: 30px 20px;
-  }
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #88BDBC;
+  color: #222;
+  line-height: 1.6;
+}
+
+header.main-header {
+  background-color: #88BDBC;
+  color: #88BDBC;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 50px;
+  margin-right: 10px;
+}
+
+nav a {
+  color: #112d32;
+  margin-left: 15px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+.hero {
+  background: url('../img/bg.png') center/cover no-repeat;
+  text-align: center;
+  color: #112d32;
+  padding: 100px 20px;
+  background-color: #112D32;
+}
+
+.hero h2 {
+  font-size: 2.5rem;
+}
+
+.btn {
+  background-color: white;
+  color: white;
+  padding: 12px 25px;
+  font-size: 1rem;
+  border: none;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background-color: #eee;
+}
+
+.info-section, .upload-section {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.alt {
+  background-color: #88BDBC;
+}
+
+input[type="file"] {
+  margin: 20px auto;
+  display: block;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #112D32;
+  color: WHITE;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #a0001a;
+}
+
+#result {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+footer {
+  background-color: #112D32;
+  color: white;
+  text-align: center;
+  padding: 30px 20px;
+}
+/* Header Styles */
+.main-header {
+position: fixed;
+top: 0;
+width: 100%;
+background: white;
+z-index: 999;
+transition: all 0.4s ease;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+max-width: 1200px;
+margin: 0 auto;
+padding: 10px 20px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+transition: all 0.3s ease;
+}
+
+.logo-title {
+display: flex;
+align-items: center;
+transition: all 0.3s ease;
+}
+
+.logo-img {
+width: 80px;
+transition: width 0.3s ease;
+}
+
+.site-title {
+font-size: 2rem;
+font-weight: bold;
+margin-left: 10px;
+color: #112D32; 
+transition: font-size 0.3s ease;
+}
+
+/* On Scroll (will be added via JS) */
+.header-scrolled .logo-img {
+width: 50px;
+}
+
+.header-scrolled .site-title {
+font-size: 1.2rem;
+}
+
+/* Hero Section */
+.hero {
+height: 100vh;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+text-align: center;
+padding-top: 120px; /* prevent overlap with fixed header */
+background: #88BDBC;
+}
+
+.hero h1 {
+font-size: 4rem;
+color: #112D32;
+}
+
+.hero .btn {
+background: #EFB11D;
+color: white;
+padding: 12px 30px;
+text-decoration: none;
+border-radius: 5px;
+font-size: 1.1em;
+transition: background 0.3s;
+}
+
+.hero .btn:hover {
+background: #a30000;
+}
