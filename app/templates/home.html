@@ -11,7 +11,7 @@
 
   <header class="main-header">
     <div class="logo">
-      <img src="png/logo_test.png" alt="AUTHENFY Logo">
+      <img src="app/templates/png/logo_test.png" alt="AUTHENFY Logo">
       <h1>AUTHENFY</h1>
     </div>
     <nav>
@@ -26,7 +26,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AUTHENFY - Deepfake Detection</title>
-    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
   </head>
   <body>
   
@@ -44,12 +44,12 @@
     <header class="main-header" id="mainHeader">
       <div class="header-content" id="headerContent">
         <div class="logo-title">
-          <img src="png/logo_test.png" alt="AUTHENFY Logo" class="logo-img" />
+          <img src="{{ url_for('static', filename='static.png') }}" alt="AUTHENFY Logo" class="logo-img" />
           <span class="site-title">AUTHENFY</span>
         </div>
         <nav>
           <a href="#about">About</a>
-          <a href="form.html">Register</a>
+          <a href="form">Register</a>
           <a href="#how-it-works">How It Works</a>
           <a href="#contact">Contact</a>
         </nav>
@@ -58,11 +58,11 @@
       </div>
     </header>
     <section class="hero">
-      <h1><bold>AUTHENFY</bold></h1>
+      <h1><bold>AUTHENFY</bold></1>
       <h2>Detect Deepfakes Instantly</h2>
       <p>Upload videos or images and verify authenticity with our AI-powered engine.</p>
       <br>
-      <a href="analyze_.html" class="btn" target="blank">Start Now</a>
+      <a href="upload" class="btn" target="blank">Start Now</a>
     </section>
     
     <br>
@@ -84,7 +84,7 @@
       <p>&copy; 2025 AUTHENFY. All rights reserved.</p>
     </footer>
   
-    <script src="js/script.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
   </body>
   </html>
   
@@ -117,6 +117,6 @@
     <p>&copy; 2025 AUTHENFY. All rights reserved.</p>
   </footer>
 
-  <script src="js/script.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
