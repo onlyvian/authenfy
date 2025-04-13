@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AUTHENFY - Deepfake Detection</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+  <header class="main-header" id="mainHeader">
+    <div class="header-content" id="headerContent">
+      <div class="logo-title">
+        <img src="{{ url_for('static', filename='static.png') }}" alt="AUTHENFY Logo" class="logo-img" />
+        <span class="site-title">AUTHENFY</span>
+      </div>
+      <nav>
+        <a href="#about">About</a>
+        <a href="{{ url_for('form') }}">Register</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1><strong>AUTHENFY</strong></h1>
+    <h2>Detect Deepfakes Instantly</h2>
+    <p>Upload videos or images and verify authenticity with our AI-powered engine.</p>
+    <br>
+    <a href="{{ url_for('upload') }}" class="btn">Start Now</a> <!-- Updated with the correct endpoint for uploading files -->
+  </section>
+
+  <section id="about" class="info-section">
+    <h2>About AUTHENFY</h2>
+    <p>AUTHENFY uses cutting-edge AI and Blockchain to identify manipulated content in videos, images, and audio, protecting you from misinformation.</p>
+  </section>
+
+  <section id="how-it-works" class="info-section alt">
+    <h2>How It Works</h2>
+    <p>Our deep learning models analyze frames, detect facial inconsistencies, and check metadata to detect deepfakes.</p>
+  </section>
+
+  <footer id="contact">
+    <p>Contact us: support@authenfy.com</p>
+    <p>&copy; 2025 AUTHENFY. All rights reserved.</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
